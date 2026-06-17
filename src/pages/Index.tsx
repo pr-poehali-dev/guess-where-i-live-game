@@ -146,6 +146,15 @@ const Index = () => {
               <span className="text-muted-foreground font-medium">
                 Карточка {step + 1} из {order.length}
               </span>
+              {step > 0 && (
+                <button
+                  onClick={() => { setStep((s) => s - 1); setPicked(null); }}
+                  className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-primary font-medium transition-colors"
+                >
+                  <Icon name="ArrowLeft" size={16} />
+                  Назад
+                </button>
+              )}
             </div>
             <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden mb-8">
               <div
