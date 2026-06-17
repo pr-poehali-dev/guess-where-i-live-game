@@ -35,7 +35,6 @@ const ORGANISMS: Organism[] = [
 const Index = () => {
   const [tab, setTab] = useState<Tab>('game');
   const [step, setStep] = useState(0);
-  const [score, setScore] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
 
@@ -45,7 +44,6 @@ const Index = () => {
   const choose = (zone: string) => {
     if (picked) return;
     setPicked(zone);
-    if (zone === current.zone) setScore((s) => s + 1);
   };
 
   const next = () => {
@@ -59,7 +57,6 @@ const Index = () => {
 
   const restart = () => {
     setStep(0);
-    setScore(0);
     setPicked(null);
     setFinished(false);
   };
@@ -74,7 +71,7 @@ const Index = () => {
           <div className="flex items-center gap-3 text-accent mb-2">
             <Icon name="Compass" size={22} />
             <span className="text-xs tracking-[0.25em] uppercase font-semibold text-muted-foreground">
-              Биология · Природные зоны
+              Природные зоны
             </span>
           </div>
           <h1 className="font-serif text-3xl md:text-4xl font-black leading-tight text-primary">
@@ -109,10 +106,10 @@ const Index = () => {
             <ol className="space-y-4">
               {[
                 'На карточке появляется название животного или растения.',
-                'Выбери природную зону, в которой оно живёт, из шести вариантов.',
+                'Всей группой обсудите и выберите природную зону из шести вариантов.',
                 'Система сразу покажет, верно ли, и расскажет интересный факт.',
-                'За каждый правильный ответ начисляется один балл — всего их 10.',
-                'В конце ты увидишь свой результат и сможешь сыграть заново.',
+                'Переходите к следующей карточке — так разберёте все 10 организмов.',
+                'В конце можно сыграть заново и закрепить материал.',
               ].map((t, i) => (
                 <li key={i} className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground font-serif font-bold flex items-center justify-center">
@@ -147,11 +144,7 @@ const Index = () => {
             {/* progress */}
             <div className="flex items-center justify-between mb-6 text-sm">
               <span className="text-muted-foreground font-medium">
-                Вопрос {step + 1} из {order.length}
-              </span>
-              <span className="inline-flex items-center gap-1.5 font-semibold text-primary">
-                <Icon name="Star" size={16} className="text-accent" />
-                {score} {score === 1 ? 'балл' : 'баллов'}
+                Карточка {step + 1} из {order.length}
               </span>
             </div>
             <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden mb-8">
@@ -226,18 +219,13 @@ const Index = () => {
 
         {tab === 'game' && finished && (
           <section className="animate-scale-in text-center rounded-lg border border-border bg-card p-10 shadow-sm">
-            <div className="text-5xl mb-4">
-              {score >= 9 ? '🏆' : score >= 6 ? '🎓' : '📚'}
-            </div>
+            <div className="text-5xl mb-4">🎓</div>
             <h2 className="font-serif text-3xl font-black text-primary mb-2">
-              {score} из {order.length}
+              Все карточки разобраны!
             </h2>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              {score >= 9
-                ? 'Отличный результат! Ты прекрасно знаешь природные зоны.'
-                : score >= 6
-                ? 'Хороший результат! Ещё немного — и будет идеально.'
-                : 'Неплохое начало. Загляни в правила и попробуй снова.'}
+              Вы прошли все {order.length} организмов и узнали, где они обитают.
+              Можно сыграть заново и закрепить материал.
             </p>
             <button
               onClick={restart}
